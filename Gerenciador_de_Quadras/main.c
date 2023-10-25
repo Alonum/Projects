@@ -1,9 +1,9 @@
 /*Objetivos:
-		*Criar função de adquirir data
-			*Criar a funcionalidade
-			*Criar ponteiros de struct para utilizar dentro da função
-			*Criar a função modularizada
-			*Trocar nomes e etc e ver se funciona
+		*Criar função de adquirir data** FEITO FEITO FEITO FEITO
+			*Criar a funcionalidade**
+			*Criar ponteiros de struct para utilizar dentro da função**
+			*Criar a função modularizada**
+			*Trocar nomes e etc e ver se funciona**
 		
 		*Verificar se leitura de txts não existentes é inválido
 		
@@ -18,6 +18,10 @@
 #define LSIZE 200
 #define DIR "C:\\Users\\a249664\\Documents\\Projeto SI203B\\Data\\"
 #define LBREMOVER(string) string[strlen(string)-1] = '\0';
+
+void DateTreat(char *Date);
+void DateGet(char *day, char *month, char *year);
+
 
 struct QuadraInfo{
 	char name[LSIZE];
@@ -40,31 +44,15 @@ int main(){
 	FILE *FilePointer;//Ponteiro de Arquivo
 	char Directory[LSIZE] = DIR;
 	
-	struct Date ActualDate;
-	//Adquirir Data
-	printf("Insira a data:\nDia:\t");
-	fgets(ActualDate.day,5,stdin);			LBREMOVER(ActualDate.day)
-	if(strlen(ActualDate.day)<2){
-		ActualDate.day[1] = ActualDate.day[0];
-		ActualDate.day[0] = '0';
-		ActualDate.day[2] = '\0';
-	}
+	struct Date *ActualDate;
+	ActualDate = (struct Date*) malloc(sizeof(struct Date));
+
+	DateGet(ActualDate->day, ActualDate->month, ActualDate->year);
 	
-	printf("Mes:\t");
-	fgets(ActualDate.month,5,stdin);		LBREMOVER(ActualDate.month)
-	if(strlen(ActualDate.month)<2){
-		ActualDate.month[1] = ActualDate.month[0];
-		ActualDate.month[0] = '0';
-		ActualDate.month[2] = '\0';
-	}
-	
-	printf("Ano:\t");
-	fgets(ActualDate.year,10,stdin);			LBREMOVER(ActualDate.year)
-	
-	ActualDate.FullDate[0] = ActualDate.day[0];ActualDate.FullDate[1] = ActualDate.day[1];ActualDate.FullDate[2] = '.';
-	ActualDate.FullDate[3] = ActualDate.month[0];ActualDate.FullDate[4] = ActualDate.month[1];ActualDate.FullDate[5] = '.';
-	ActualDate.FullDate[6] = ActualDate.year[0];ActualDate.FullDate[7] = ActualDate.year[1];ActualDate.FullDate[8] = ActualDate.year[2];ActualDate.FullDate[9] = ActualDate.year[3];ActualDate.FullDate[10] = '\0';
-	printf("%s\n", ActualDate.FullDate);
+	ActualDate->FullDate[0] = ActualDate->day[0];ActualDate->FullDate[1] = ActualDate->day[1];ActualDate->FullDate[2] = '.';
+	ActualDate->FullDate[3] = ActualDate->month[0];ActualDate->FullDate[4] = ActualDate->month[1];ActualDate->FullDate[5] = '.';
+	ActualDate->FullDate[6] = ActualDate->year[0];ActualDate->FullDate[7] = ActualDate->year[1];ActualDate->FullDate[8] = ActualDate->year[2];ActualDate->FullDate[9] = ActualDate->year[3];ActualDate->FullDate[10] = '\0';
+	printf("%s\n", ActualDate->FullDate);
 	//Adquirir Data
 
 
@@ -72,3 +60,39 @@ int main(){
 	
 	return 0;	
 }
+
+
+
+void DateGet(char *day, char *month, char *year){
+    
+    start:    
+        printf("Insira o dia:\t");
+        fgets(day,10,stdin); LBREMOVER(day)
+        if(atoi(day)>31 || atoi(day)<1){
+            printf("Des invalido, insira dados novamente\n");
+            goto start;
+        }
+        printf("Insira o mes:\t");
+        fgets(month,10,stdin); LBREMOVER(month)
+        if(atoi(month)>12 || atoi(month)<1){
+            printf("Mes invalido, insira dados novamente\n");
+            goto start;
+        }
+        printf("Insira o ano:\t");
+        fgets(year,10,stdin); LBREMOVER(year)
+        if(strlen(year)<4){
+            printf("Ano invalido, insira dados novamente\n");
+            goto start;
+
+        }    
+        DateTreat(day);DateTreat(month);
+}
+
+void DateTreat(char *Date){
+    if(strlen(Date)<2){
+        Date[1] = Date[0];
+        Date[0] = '0';
+        Date[2] = '\0';
+    }
+}
+
