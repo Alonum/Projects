@@ -21,6 +21,7 @@
 
 void DateTreat(char *Date);
 void DateGet(char *day, char *month, char *year);
+void DateFormat(char *day, char *month, char *year, char *entiredate);
 
 
 struct QuadraInfo{
@@ -48,10 +49,7 @@ int main(){
 	ActualDate = (struct Date*) malloc(sizeof(struct Date));
 
 	DateGet(ActualDate->day, ActualDate->month, ActualDate->year);
-	
-	ActualDate->FullDate[0] = ActualDate->day[0];ActualDate->FullDate[1] = ActualDate->day[1];ActualDate->FullDate[2] = '.';
-	ActualDate->FullDate[3] = ActualDate->month[0];ActualDate->FullDate[4] = ActualDate->month[1];ActualDate->FullDate[5] = '.';
-	ActualDate->FullDate[6] = ActualDate->year[0];ActualDate->FullDate[7] = ActualDate->year[1];ActualDate->FullDate[8] = ActualDate->year[2];ActualDate->FullDate[9] = ActualDate->year[3];ActualDate->FullDate[10] = '\0';
+	DateFormat(ActualDate->day,ActualDate->month,ActualDate->year,ActualDate->FullDate);
 	printf("%s\n", ActualDate->FullDate);
 	//Adquirir Data
 
@@ -80,7 +78,7 @@ void DateGet(char *day, char *month, char *year){
         }
         printf("Insira o ano:\t");
         fgets(year,10,stdin); LBREMOVER(year)
-        if(strlen(year)<4){
+        if(strlen(year)!=4){
             printf("Ano invalido, insira dados novamente\n");
             goto start;
 
@@ -94,5 +92,12 @@ void DateTreat(char *Date){
         Date[0] = '0';
         Date[2] = '\0';
     }
+}
+
+void DateFormat(char *day, char *month, char *year, char *entiredate){
+    
+	entiredate[0] = day[0];entiredate[1] = day[1];entiredate[2] = '.';
+	entiredate[3] = month[0];entiredate[4] = month[1];entiredate[5] = '.';
+	entiredate[6] = year[0];entiredate[7] = year[1];entiredate[8] = year[2];entiredate[9] = year[3];entiredate[10] = '\0';
 }
 
