@@ -69,7 +69,7 @@ void DateGet(char *day, char *month, char *year){
         printf("Insira o dia:\t");
         fgets(day,10,stdin); LBREMOVER(day)
         if(atoi(day)>31 || atoi(day)<1){
-            printf("Des invalido, insira dados novamente\n");
+            printf("Dia invalido, insira dados novamente\n");
             goto start;
         }
         printf("Insira o mes:\t");
