@@ -53,12 +53,13 @@ int main(){
 
 start:
 	Directory[0] ='\0';
-	strcat(Directory, DIR);
+	strcpy(Directory, DIR); //Reinicia diretorio
+	strcpy(TextData, "Emtpy\0"); //Reinicia info de output dos arquivos
 	
 	printf("\n\n\t\tPick your poison\n\tWriting\t\t\tReading\n\n\t\t   ");
 	fgets(UserCommand, LSIZE, stdin); LBREMOVER(UserCommand)
 	LowerCase(UserCommand);
-	
+
 /* Protótipo de Escrita */	
 	if(!(strcmp(UserCommand, "writing"))){
 		printf("\nPlease insert date\n\n");
@@ -88,14 +89,13 @@ start:
 		goto start;
 	}
 
-
-/*Protótipo de Aquisição de Data*/
+/*
+/*Protótipo de Aquisição de Data
 	DateGet(ActualDate->day, ActualDate->month, ActualDate->year);
 	DateFormat(ActualDate->day,ActualDate->month,ActualDate->year,ActualDate->FullDate);
 	printf("%s\n", ActualDate->FullDate);
 	//Adquirir Data
-
-
+*/
 	
 	
 	return 0;	
