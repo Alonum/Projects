@@ -9,6 +9,10 @@
 		
 		*Verificar criaÃ§Ã£o de txts e leitura dos mesmos depois
 
+
+		*Adicionar Quadra Volei, Quadra Basquete, Quadra Futebol
+		*Adicionar Preco 200 Reais Fixo
+		
 */
 
 #include <stdio.h>
@@ -24,12 +28,13 @@
 void SingleNumberTreat(char *Number);
 void DateGet(char *day, char *month, char *year);
 void DateFormat(char *day, char *month, char *year, char *entiredate);
-void InfoGet(char *hour, char *minutes, char *name, char *document);
-void InfoFormat(char *hour, char *minutes, char *name, char *document, char *fullcase);
+void InfoGet(char *hour, char *minutes, char *name, char *document, char *type);
+void InfoFormat(char *hour, char *minutes, char *name, char *document, char *type, char *fullcase);
 void LowerCase(char *string);
 
 struct QuadraInfo{
 	char name[LSIZE];
+	char type[20];
 	char hour[10];
 	char minutes[10];
 	char cpf[15];
@@ -45,6 +50,10 @@ struct Date{
 
 int main(){
 	
+	//wip
+	int Index;
+	//wip
+	
 	FILE *FilePointer;//Ponteiro de Arquivo
 	char Directory[LSIZE];// = DIR;
 	char *UserCommand = malloc(LSIZE*sizeof(char));
@@ -52,13 +61,13 @@ int main(){
 	struct Date *ActualDate;
 	struct QuadraInfo *InfoAtual;
 	ActualDate = (struct Date*) malloc(sizeof(struct Date));
-//	InfoAtual = (struct QuadraInfo*) malloc(sizeof(struct QuadraInfo));
+	InfoAtual = (struct QuadraInfo*) malloc(sizeof(struct QuadraInfo));
 
 start:
 	Directory[0] ='\0';
 	strcpy(Directory, DIR); //Reinicia diretorio
 	strcpy(TextData, "Emtpy\0"); //Reinicia info de output dos arquivos
-	InfoAtual = (struct QuadraInfo*) malloc(sizeof(struct QuadraInfo));
+	
 	
 	printf("\n\nOperacoes de Agendamento:\n\n\tMarcar\t\t\tConsultar\t\tDeletar\n\n\t\t   ");
 	fgets(UserCommand, LSIZE, stdin); LBREMOVER(UserCommand)
@@ -73,29 +82,45 @@ start:
 		//printf("%s", Directory);
 		FilePointer = fopen(Directory, "a");
 		printf("Insira as informacoes do Agendamento\n\n");
-		InfoGet(InfoAtual->hour, InfoAtual->minutes, InfoAtual->name, InfoAtual->cpf);
-        InfoFormat(InfoAtual->hour, InfoAtual->minutes, InfoAtual->name, InfoAtual->cpf,InfoAtual->fullcase);
+		InfoGet(InfoAtual->hour, InfoAtual->minutes, InfoAtual->name, InfoAtual->cpf, InfoAtual->type);
+        InfoFormat(InfoAtual->hour, InfoAtual->minutes, InfoAtual->name, InfoAtual->cpf, InfoAtual->type,InfoAtual->fullcase);
 		fwrite(InfoAtual->fullcase, sizeof(char), strlen(InfoAtual->fullcase), FilePointer);
 		fclose(FilePointer);
 		free(InfoAtual);
+		free(ActualDate);
 		goto start;
 	}
 /* Protótipo de Leitura */
 	else if(!(strcmp(UserCommand, "consultar"))){
-		printf("\nPlease insert date\n\n");
+		printf("\nInsira a data do Agendamento\n\n");
 		DateGet(ActualDate->day, ActualDate->month, ActualDate->year);
 		DateFormat(ActualDate->day,ActualDate->month,ActualDate->year,ActualDate->FullDate);
 		strcat(Directory, ActualDate->FullDate);
 		FilePointer = fopen(Directory, "r");
-		fgets(TextData, LSIZE, FilePointer);
+		
+		//WIP
+		fgets(TextData, 3, FilePointer);
+		printf("Hora:%s", TextData);
+		for(Index = 0;fgetc(FilePointer) != ';';Index++){
+			fseek(FilePointer, sizeof(char), SEEK_CUR);
+		//	fgetc(FilePointer);
+			TextData[Index] = fgetc(FilePointer);
+			printf("\nEstado %d: %s\n", Index, TextData);
+		}
+		//fgets(TextData, 10, FilePointer);
+		printf("Nome: %s", TextData);
+		
 		printf("\nYour info:\n\n%s\n\n", TextData);
 		fclose(FilePointer);
 		goto start;
+		//WIP
+		
 	}else{
 		printf("\n\n\t\t!!Entrada Invalida!!\n\n");
 		goto start;
 	}
 
+	goto start;
 /*
 /*Protótipo de Aquisição de Data
 	DateGet(ActualDate->day, ActualDate->month, ActualDate->year);
@@ -154,19 +179,28 @@ void DateFormat(char *day, char *month, char *year, char *entiredate){
 	entiredate[10] = '.'; entiredate[11] = 't'; entiredate[12] = 'x'; entiredate[13] = 't'; entiredate[14] = '\0';
 }
 
-void InfoGet(char *hour, char *minutes, char *name, char *document){
+void InfoGet(char *hour, char *minutes, char *name, char *document, char *type){
     
-    start:    
+    start:
+	
+		printf("Insira a quadra:\t");
+		fgets(type,20,stdin); LBREMOVER(type)
+		LowerCase(type);
+		if(!(!strcmp(type,"volei") || !strcmp(type ,"futebol") || !strcmp(type, "basquete"))){
+			printf("Quadra invalida, pressione enter para inserir os dados novamente\n");
+			while(getchar() != '\n'){getchar();}
+			goto start;
+		}
         printf("Insira a hora:\t");
         fgets(hour,10,stdin); LBREMOVER(hour)   
-        if(atoi(hour)>23 || atoi(hour)<0){
+        if(atoi(hour)>22 || atoi(hour)<0){
             printf("Hora invalida, pressione enter para inserir os dados novamente\n");
             while(getchar() != '\n'){getchar();}
             goto start;
         }
         printf("Insira os minutos:\t");
         fgets(minutes,10,stdin); LBREMOVER(minutes)
-        if(atoi(minutes)>59 || atoi(minutes)<1){
+        if(atoi(minutes)>59 || atoi(minutes)<0 ||(atoi(hour)==22 && atoi(minutes)>0)){
             printf("Minuto invalido, pressione enter para inserir os dados novamente\n");
             while(getchar() != '\n'){getchar();}
             goto start;
@@ -184,13 +218,14 @@ void InfoGet(char *hour, char *minutes, char *name, char *document){
         SingleNumberTreat(hour);SingleNumberTreat(minutes);
 }
 
-void InfoFormat(char *hour, char *minutes, char *name, char *document, char *fullcase){
+void InfoFormat(char *hour, char *minutes, char *name, char *document, char *type, char *fullcase){
     fullcase[0] ='>';
     strcpy(fullcase, hour);fullcase[2] = ':';fullcase[3] = '\0';
     strcat(fullcase, minutes);fullcase[strlen(fullcase)] = ';';fullcase[6] = '\0';
-    strcat(fullcase, name);fullcase[strlen(fullcase)] = ';';fullcase[7+strlen(name)] = '\0';
-    strcat(fullcase, document);fullcase[strlen(fullcase)] = '>';fullcase[8+strlen(name)+strlen(document)] = '\n';
-    fullcase[9+strlen(name)+strlen(document)] = '\0';
+    strcat(fullcase, type);fullcase[strlen(fullcase)] = ';';fullcase[7+strlen(type)] = '\0';
+    strcat(fullcase, name);fullcase[strlen(fullcase)] = ';';fullcase[8+strlen(type)+strlen(name)] = '\0';
+    strcat(fullcase, document);fullcase[strlen(fullcase)] = '>';fullcase[9+strlen(type)+strlen(document)+strlen(name)] = '\n';
+	fullcase[10+strlen(name)+strlen(document)+strlen(type)] = '\0';
 }
 
 void LowerCase(char *string){
