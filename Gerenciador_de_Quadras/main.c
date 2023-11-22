@@ -52,13 +52,13 @@ int main(){
 	struct Date *ActualDate;
 	struct QuadraInfo *InfoAtual;
 	ActualDate = (struct Date*) malloc(sizeof(struct Date));
-	InfoAtual = (struct QuadraInfo*) malloc(sizeof(struct QuadraInfo));
-
+//	InfoAtual = (struct QuadraInfo*) malloc(sizeof(struct QuadraInfo));
 
 start:
 	Directory[0] ='\0';
 	strcpy(Directory, DIR); //Reinicia diretorio
 	strcpy(TextData, "Emtpy\0"); //Reinicia info de output dos arquivos
+	InfoAtual = (struct QuadraInfo*) malloc(sizeof(struct QuadraInfo));
 	
 	printf("\n\nOperacoes de Agendamento:\n\n\tMarcar\t\t\tConsultar\t\tDeletar\n\n\t\t   ");
 	fgets(UserCommand, LSIZE, stdin); LBREMOVER(UserCommand)
@@ -77,6 +77,7 @@ start:
         InfoFormat(InfoAtual->hour, InfoAtual->minutes, InfoAtual->name, InfoAtual->cpf,InfoAtual->fullcase);
 		fwrite(InfoAtual->fullcase, sizeof(char), strlen(InfoAtual->fullcase), FilePointer);
 		fclose(FilePointer);
+		free(InfoAtual);
 		goto start;
 	}
 /* Protótipo de Leitura */
@@ -184,12 +185,12 @@ void InfoGet(char *hour, char *minutes, char *name, char *document){
 }
 
 void InfoFormat(char *hour, char *minutes, char *name, char *document, char *fullcase){
-    fullcase[0] ='\0';
-    strcat(fullcase, hour);fullcase[strlen(fullcase)] = ':';
-    strcat(fullcase, minutes);fullcase[strlen(fullcase)] = ';';
-    strcat(fullcase, name);fullcase[strlen(fullcase)] = ';';
-    strcat(fullcase, document);fullcase[strlen(fullcase)] = '>';
-    fullcase[strlen(fullcase)] = '\n';
+    fullcase[0] ='>';
+    strcpy(fullcase, hour);fullcase[2] = ':';fullcase[3] = '\0';
+    strcat(fullcase, minutes);fullcase[strlen(fullcase)] = ';';fullcase[6] = '\0';
+    strcat(fullcase, name);fullcase[strlen(fullcase)] = ';';fullcase[7+strlen(name)] = '\0';
+    strcat(fullcase, document);fullcase[strlen(fullcase)] = '>';fullcase[8+strlen(name)+strlen(document)] = '\n';
+    fullcase[9+strlen(name)+strlen(document)] = '\0';
 }
 
 void LowerCase(char *string){
