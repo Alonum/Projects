@@ -1,13 +1,13 @@
 /*Objetivos:
-		*Criar função de adquirir data** FEITO FEITO FEITO FEITO
+		*Criar funÃ§Ã£o de adquirir data** FEITO FEITO FEITO FEITO
 			*Criar a funcionalidade**
-			*Criar ponteiros de struct para utilizar dentro da função**
-			*Criar a função modularizada**
+			*Criar ponteiros de struct para utilizar dentro da funÃ§Ã£o**
+			*Criar a funÃ§Ã£o modularizada**
 			*Trocar nomes e etc e ver se funciona**
 		
-		*Verificar se leitura de txts não existentes é inválido
+		*Verificar se leitura de txts nÃ£o existentes Ã© invÃ¡lido
 		
-		*Verificar criação de txts e leitura dos mesmos depois
+		*Verificar criaÃ§Ã£o de txts e leitura dos mesmos depois
 
 */
 
@@ -30,7 +30,7 @@ struct QuadraInfo{
 	char name[LSIZE];
 	char date[10];
 	char time[10];
-	char status[20];
+	char cpf[10];
 };
 struct Date{
 	char day[5];
@@ -49,6 +49,7 @@ int main(){
 	char *UserCommand = malloc(LSIZE*sizeof(char));
 	char *TextData = malloc(LSIZE*sizeof(char));
 	struct Date *ActualDate;
+	struct QuadraInfo *InfoAtual;
 	ActualDate = (struct Date*) malloc(sizeof(struct Date));
 
 start:
@@ -56,28 +57,26 @@ start:
 	strcpy(Directory, DIR); //Reinicia diretorio
 	strcpy(TextData, "Emtpy\0"); //Reinicia info de output dos arquivos
 	
-	printf("\n\n\t\tPick your poison\n\tWriting\t\t\tReading\n\n\t\t   ");
+	printf("\n\nOperacoes de Agendamento:\n\n\tMarcar\t\t\tConsultar\t\tDeletar\n\n\t\t   ");
 	fgets(UserCommand, LSIZE, stdin); LBREMOVER(UserCommand)
 	LowerCase(UserCommand);
 
-/* Prot�tipo de Escrita */	
-	if(!(strcmp(UserCommand, "writing"))){
-		printf("\nPlease insert date\n\n");
+/* Protótipo de Escrita */	
+	if(!(strcmp(UserCommand, "marcar"))){
+		printf("\nData do agendamento:\n\n");
 		DateGet(ActualDate->day, ActualDate->month, ActualDate->year);
 		DateFormat(ActualDate->day,ActualDate->month,ActualDate->year,ActualDate->FullDate);
 		strcat(Directory, ActualDate->FullDate);
 		//printf("%s", Directory);
-		FilePointer = fopen(Directory, "w");
+		FilePointer = fopen(Directory, "a");
 		printf("Write your data\n\n");
 		fgets(UserCommand, LSIZE, stdin);
 		fwrite(UserCommand, sizeof(char), strlen(UserCommand), FilePointer);
 		fclose(FilePointer);
 		goto start;
 	}
-	
-/* Prot�tipo de Leitura */
-
-	if(!(strcmp(UserCommand, "reading"))){
+/* Protótipo de Leitura */
+	else if(!(strcmp(UserCommand, "consultar"))){
 		printf("\nPlease insert date\n\n");
 		DateGet(ActualDate->day, ActualDate->month, ActualDate->year);
 		DateFormat(ActualDate->day,ActualDate->month,ActualDate->year,ActualDate->FullDate);
@@ -87,10 +86,13 @@ start:
 		printf("\nYour info:\n\n%s\n\n", TextData);
 		fclose(FilePointer);
 		goto start;
+	}else{
+		printf("\n\n\t\t!!Entrada Invalida!!\n\n");
+		goto start;
 	}
 
 /*
-/*Prot�tipo de Aquisi��o de Data
+/*Protótipo de Aquisição de Data
 	DateGet(ActualDate->day, ActualDate->month, ActualDate->year);
 	DateFormat(ActualDate->day,ActualDate->month,ActualDate->year,ActualDate->FullDate);
 	printf("%s\n", ActualDate->FullDate);
@@ -156,4 +158,3 @@ void LowerCase(char *string){
 		}
 	}	
 }
-
