@@ -1,18 +1,18 @@
 /*Objetivos:
-		*Criar funÃ§Ã£o de adquirir data** FEITO FEITO FEITO FEITO
+		*Criar fun??o de adquirir data** FEITO FEITO FEITO FEITO
 			*Criar a funcionalidade**
-			*Criar ponteiros de struct para utilizar dentro da funÃ§Ã£o**
-			*Criar a funÃ§Ã£o modularizada**
+			*Criar ponteiros de struct para utilizar dentro da fun??o**
+			*Criar a fun??o modularizada**
 			*Trocar nomes e etc e ver se funciona**
 		
-		*Verificar se leitura de txts nÃ£o existentes Ã© invÃ¡lido
+		*Verificar se leitura de txts n?o existentes ? inv?lido
 		
-		*Verificar criaÃ§Ã£o de txts e leitura dos mesmos depois
+		*Verificar cria??o de txts e leitura dos mesmos depois
 
 
-		*Adicionar Quadra Volei, Quadra Basquete, Quadra Futebol
-		*Adicionar Preco 200 Reais Fixo
-		
+FEITO				*Adicionar Quadra Volei, Quadra Basquete, Quadra Futebol
+A FAZER				*Adicionar Preco 200 Reais Fixo
+QUASE FEITO			*Finalizar Prot�tipo de Verificacao	
 */
 
 #include <stdio.h>
@@ -51,11 +51,12 @@ struct Date{
 int main(){
 	
 	//wip
-	int Index;
+	int Index, IndexCompare, IndexPosition, IndexNegative;
 	//wip
 	
 	FILE *FilePointer;//Ponteiro de Arquivo
 	char Directory[LSIZE];// = DIR;
+	char *InfoCompare = malloc(10*sizeof(char));
 	char *UserCommand = malloc(LSIZE*sizeof(char));
 	char *TextData = malloc(LSIZE*sizeof(char));
 	struct Date *ActualDate;
@@ -73,24 +74,78 @@ start:
 	fgets(UserCommand, LSIZE, stdin); LBREMOVER(UserCommand)
 	LowerCase(UserCommand);
 
-/* Protótipo de Escrita */	
+/* Prot?ipo de Escrita */	
 	if(!(strcmp(UserCommand, "marcar"))){
 		printf("\nData do agendamento:\n\n");
+		
+		/*Adquirir nome do arquivo do dia desejado*/
 		DateGet(ActualDate->day, ActualDate->month, ActualDate->year);
 		DateFormat(ActualDate->day,ActualDate->month,ActualDate->year,ActualDate->FullDate);
 		strcat(Directory, ActualDate->FullDate);
-		//printf("%s", Directory);
-		FilePointer = fopen(Directory, "a");
+		/*Verificar informacoes do agendamento*/
 		printf("Insira as informacoes do Agendamento\n\n");
 		InfoGet(InfoAtual->hour, InfoAtual->minutes, InfoAtual->name, InfoAtual->cpf, InfoAtual->type);
         InfoFormat(InfoAtual->hour, InfoAtual->minutes, InfoAtual->name, InfoAtual->cpf, InfoAtual->type,InfoAtual->fullcase);
+        /*Verificar o arquivo              WIP TOTAL */
+        FilePointer = fopen(Directory, "r");
+        IndexPosition = 0;
+        IndexNegative = 0;
+        while(fgetc(FilePointer)!= EOF){
+			printf("\nComecando em %d\n", IndexPosition);
+			//Procura Hora
+			for(Index=0;fgetc(FilePointer) != ':'; Index++){
+				fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
+				InfoCompare[Index] = fgetc(FilePointer);
+				IndexPosition++;
+			}
+			//Move uma posicao depois de : na string
+            IndexPosition++;
+            
+            InfoCompare[2] = '\0';
+            //Adiciona hora a IndexCompare
+            IndexCompare = atoi(InfoCompare);
+            printf("\nHora Atual:%s\n", InfoCompare);
+            //Procura Minutos
+           	for(Index=0;fgetc(FilePointer) != ';'; Index++){
+				fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
+				InfoCompare[Index] = fgetc(FilePointer);
+				IndexPosition++;
+			}
+			
+			InfoCompare[2] = '\0';
+			
+			for(;fgetc(FilePointer)!= '>';){
+				IndexPosition++;
+				//printf("\nAchamos a quebra de linha\n");
+				fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
+			}
+			IndexPosition+=3;
+			
+			//Compara minutos, se houver qualquer minuto adicional, conta a hora.
+			if(atoi(InfoCompare)>1){
+				IndexCompare++;
+				IndexNegative++;
+			}
+			if((IndexCompare-IndexNegative)-atoi(InfoAtual->hour)<=1 && IndexCompare-atoi(InfoAtual->hour) >=-1){
+        		printf("Hora ja marcada, pois %d menos %d, resulta em %d", IndexCompare, atoi(InfoAtual->hour), IndexCompare-atoi(InfoAtual->hour));
+        		
+			}
+			else
+       			printf("Hora nao marcada, pois %d menos %d, resulta em %d", IndexCompare, atoi(InfoAtual->hour), IndexCompare-atoi(InfoAtual->hour));
+		
+        }
+        printf("Fim do programa");
+        fclose(FilePointer);
+        return 0;
+        /*Escrever em arquivo*/
+        FilePointer = fopen(Directory, "a");
 		fwrite(InfoAtual->fullcase, sizeof(char), strlen(InfoAtual->fullcase), FilePointer);
 		fclose(FilePointer);
 		free(InfoAtual);
 		free(ActualDate);
 		goto start;
 	}
-/* Protótipo de Leitura */
+/* Prot?ipo de Leitura */
 	else if(!(strcmp(UserCommand, "consultar"))){
 		printf("\nInsira a data do Agendamento\n\n");
 		DateGet(ActualDate->day, ActualDate->month, ActualDate->year);
@@ -122,7 +177,7 @@ start:
 
 	goto start;
 /*
-/*Protótipo de Aquisição de Data
+/*Prot?ipo de Aquisi?o de Data
 	DateGet(ActualDate->day, ActualDate->month, ActualDate->year);
 	DateFormat(ActualDate->day,ActualDate->month,ActualDate->year,ActualDate->FullDate);
 	printf("%s\n", ActualDate->FullDate);
