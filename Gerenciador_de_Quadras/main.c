@@ -12,7 +12,7 @@
 
 FEITO				*Adicionar Quadra Volei, Quadra Basquete, Quadra Futebol
 A FAZER				*Adicionar Preco 200 Reais Fixo
-QUASE FEITO			*Finalizar Protótipo de Verificacao	
+QUASE FEITO			*Finalizar ProtÃ³tipo de Verificacao	
 */
 
 #include <stdio.h>
@@ -208,6 +208,17 @@ next:
 				TextData[Index]='\0';
 				if(!strcmp(TextData, InfoAtual->type)){
 					printf("\n\nQuadra Reservada no momento\n\n");
+						fclose(FilePointer);
+						free(QuadraCompare); 
+						free(TimeCompare); 
+						free(InfoAtual);
+						free(ActualDate);
+						free(TextData);
+						free(InfoCompare);
+						free(UserCommand);
+					printf("\nPressione enter para continuar\n");
+					while(getchar() != '\n'){getchar();}
+					CLEARSCREEN
 					goto start;
 				}
 			}
@@ -551,64 +562,3 @@ void LowerCase(char *string){
 		}
 	}	
 }
-
-
-/* While para verificar de hora em hora apenas
-	while(fgetc(FilePointer)!= EOF){
-			IndexNegative = 0;//contradiz a soma de hora superior para verificar horarios anteriores ao atual
-			//printf("\nComecando em %d\n", IndexPosition);
-			//Procura Hora
-			for(Index=0;fgetc(FilePointer) != ':'; Index++){
-				fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
-				InfoCompare[Index] = fgetc(FilePointer);
-				IndexPosition++;
-			}
-			//Move uma posicao depois de : na string
-            IndexPosition++;
-            
-            InfoCompare[2] = '\0';
-            //Adiciona hora a IndexCompare
-            IndexCompare = atoi(InfoCompare);
-            printf("\nHora Atual:%s\n", InfoCompare);
-            //Procura Minutos
-           	for(Index=0;fgetc(FilePointer) != ';'; Index++){
-				fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
-				InfoCompare[Index] = fgetc(FilePointer);
-				IndexPosition++;
-			}
-			
-			InfoCompare[2] = '\0';
-			
-			
-
-			//Compara as horas entre si, e caso o horario inserido seja menor que o marcado, e tenha minutos, insere uma hora a mais.
-			Index=atoi(InfoAtual->hour);
-			if(atoi(InfoAtual->minutes)>0 && atoi(InfoAtual->hour)<IndexCompare){
-				Index++;
-			}
-			//Compara minutos, se houver qualquer minuto adicional, conta a hora. Incrementa IndexNegative para contrariar a condicao no caso de horarios anteriores.
-			if(atoi(InfoCompare)>1){
-				IndexCompare++;
-				IndexNegative++;
-			}
-
-			
-
-			if((IndexCompare-IndexNegative)-Index<=1 && IndexCompare-Index >=-1){
-        		printf("Hora ja marcada, pois %d menos %d, resulta em %d", IndexCompare, Index, IndexCompare-Index);
-        		
-			}
-			else
-       			printf("Hora nao marcada, pois %d menos %d, resulta em %d", IndexCompare, Index, IndexCompare-Index);
-		
-
-			//Procura a proxima linha
-			for(;fgetc(FilePointer)!= '\n';){
-				IndexPosition++;
-				//printf("\nAchamos a quebra de linha\n");
-				fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
-			}
-			IndexPosition++;
-
-	
-        }*/
