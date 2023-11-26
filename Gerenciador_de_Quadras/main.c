@@ -2,6 +2,7 @@
 
 		Arrumar bug de leitura quando colocar palavra nos horarios
   		Adicionar Formulario de Contrato por Locatario
+    		Capitalizar nomes
 
 */
 
@@ -68,7 +69,7 @@ int main(){
 
 start:
 	
-	InfoCompare = malloc(10*sizeof(char));
+	InfoCompare = malloc(LSIZE*sizeof(char));
 	UserCommand = malloc(LSIZE*sizeof(char));
 	TextData = malloc(LSIZE*sizeof(char));
 	QuadraCompare = malloc(LSIZE*sizeof(char));
