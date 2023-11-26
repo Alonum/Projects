@@ -12,7 +12,7 @@
 
 FEITO				*Adicionar Quadra Volei, Quadra Basquete, Quadra Futebol
 A FAZER				*Adicionar Preco 200 Reais Fixo
-QUASE FEITO			*Finalizar ProtÃ³tipo de Verificacao	
+QUASE FEITO			*Finalizar ProtÃƒÂ³tipo de Verificacao	
 */
 
 #include <stdio.h>
@@ -306,7 +306,7 @@ next:
 			}
 			IndexPosition++;
 			InfoCompare[Index] = '\0';
-			printf("Horario: %s\t\t--\t", InfoCompare);
+			printf("Horario: %s\t\t--\t\t", InfoCompare);
 			for(Index=0;fgetc(FilePointer) != ';'; Index++){
 				fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
 				InfoCompare[Index] = fgetc(FilePointer);
@@ -323,9 +323,10 @@ next:
 			IndexPosition++;
 			fgetc(FilePointer);
 		}
+
 		//Escolhe a hora que deseja utilizar
 	choose:
-		printf("Insira a hora:\t");
+		printf("\nInsira a hora:\t");
         fgets(TextData,10,stdin); LBREMOVER(TextData)   
         if(atoi(TextData)>22 || atoi(TextData)<0){
             printf("Hora invalida, pressione enter para inserir os dados novamente\n");
@@ -380,7 +381,7 @@ next:
 				}
 				InfoCompare[Index] = '\0';
 				if(!strcmp(InfoCompare, QuadraCompare)){
-					printf("\n\n\nInfo da data:\n\nHorario: %s\tQuadra: %s\n",TimeCompare, QuadraCompare);
+					printf("\n\n\nInfo da data:\n\nHorario: %s\t\t\tQuadra: %s\n",TimeCompare, QuadraCompare);
 					IndexPosition++;
 					for(Index=0;fgetc(FilePointer) != ';'; Index++){
 						fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
