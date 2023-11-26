@@ -1,18 +1,8 @@
 /*Objetivos:
-		*Criar fun??o de adquirir data** FEITO FEITO FEITO FEITO
-			*Criar a funcionalidade**
-			*Criar ponteiros de struct para utilizar dentro da fun??o**
-			*Criar a fun??o modularizada**
-			*Trocar nomes e etc e ver se funciona**
-		
-		*Verificar se leitura de txts n?o existentes ? inv?lido
-		
-		*Verificar cria??o de txts e leitura dos mesmos depois
 
+		Arrumar bug de leitura quando colocar palavra nos horarios
+  		Adicionar Formulario de Contrato por Locatario
 
-FEITO				*Adicionar Quadra Volei, Quadra Basquete, Quadra Futebol
-A FAZER				*Adicionar Preco 200 Reais Fixo
-QUASE FEITO			*Finalizar ProtÃƒÂ³tipo de Verificacao	
 */
 
 #include <stdio.h>
