@@ -82,7 +82,7 @@ start:
 	strcpy(TextData, "Emtpy\0"); //Reinicia info de output dos arquivos
 	
 	
-	printf("\n\nOperacoes de Agendamento:\n\n\tMarcar\t\t\tConsultar\t\tDeletar\n\n\t\t   ");
+	printf("\n\nOperacoes de Agendamento:\n\n\tMarcar\t\t\tConsultar\t\t");
 	fgets(UserCommand, LSIZE, stdin); LBREMOVER(UserCommand)
 	LowerCase(UserCommand);
 
