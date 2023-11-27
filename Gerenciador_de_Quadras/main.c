@@ -150,7 +150,7 @@ next:
 		fseek(FilePointer,0, SEEK_SET);
         while(fgetc(FilePointer)!= EOF){
 			IndexNegative = 0;//contradiz a soma de hora superior para verificar horarios anteriores ao atual
-																	//printf("\nComecando em %d\n", IndexPosition);//debug
+			fgetc(FilePointer);														//printf("\nComecando em %d\n", IndexPosition);//debug
 			//Procura Hora
 			for(Index=0;fgetc(FilePointer) != ':'; Index++){
 				fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
@@ -190,6 +190,7 @@ next:
 														//printf("O caractere atual eh:\t%c\n", fgetc(FilePointer));//debug
 			//if de caso a hora seja menos q duas entre cada
 			IndexPosition++;//Sai de ;
+			//printf("\n\nIndexCompare:%s\t\tIndexTime:%s\n\n", IndexCompare, IndexTime);
 			if((IndexCompare-IndexNegative)-IndexTime<=1 && IndexCompare-IndexTime >=-1){
 				for(Index=0;fgetc(FilePointer)!= ';';Index++){
 					fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
@@ -197,6 +198,7 @@ next:
 					IndexPosition++;
 				}
 				TextData[Index]='\0';
+				//printf("\n\nNao aguento mais:%s e nao sei: %s\n\n", TextData, InfoAtual->type);
 				if(!strcmp(TextData, InfoAtual->type)){
 					printf("\n\nQuadra Reservada no momento\n\n");
 						fclose(FilePointer);
@@ -312,7 +314,7 @@ next:
 				IndexPosition++;
 			}
 
-		//	IndexPosition++;
+			IndexPosition++;
 			fgetc(FilePointer);
 		}
 
