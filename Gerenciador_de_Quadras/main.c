@@ -150,7 +150,7 @@ next:
 		fseek(FilePointer,0, SEEK_SET);
         while(fgetc(FilePointer)!= EOF){
 			IndexNegative = 0;//contradiz a soma de hora superior para verificar horarios anteriores ao atual
-			fgetc(FilePointer);														//printf("\nComecando em %d\n", IndexPosition);//debug
+			//fgetc(FilePointer);														//printf("\nComecando em %d\n", IndexPosition);//debug
 			//Procura Hora
 			for(Index=0;fgetc(FilePointer) != ':'; Index++){
 				fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
