@@ -290,6 +290,7 @@ next:
 		IndexPosition = 0;
 		fseek(FilePointer,0, SEEK_SET);
 		while(fgetc(FilePointer) != EOF){
+			fseek(FilePointer,0, SEEK_SET);
 			for(Index=0;fgetc(FilePointer) != ';'; Index++){
 				fseek(FilePointer,IndexPosition*sizeof(char), SEEK_SET);
 				InfoCompare[Index] = fgetc(FilePointer);
@@ -311,7 +312,7 @@ next:
 				IndexPosition++;
 			}
 
-			IndexPosition++;
+		//	IndexPosition++;
 			fgetc(FilePointer);
 		}
 
